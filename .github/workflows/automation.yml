@@ -25,6 +25,8 @@ jobs:
     env:
       TARGET: ${{inputs.target}}
       CLEAR: ${{inputs.force_deploy}}
+      TEST__USERNAME: ${{secrets.TEST__USERNAME}}
+      TEST__PASSWORD: ${{vars.TEST__PASSWORD}}
     steps:
       - name: show target
         run: |
