@@ -3,14 +3,14 @@ on:
   workflow_dispatch:
     inputs:
       target:
-        description: "Deploy on?"
+        description: "Deploy on"
         required: true
         type: choice
         options:
           - development
           - production
       force_deploy:
-        description: "Clear?"
+        description: "Clear"
         required: true
         type: choice
         options:
