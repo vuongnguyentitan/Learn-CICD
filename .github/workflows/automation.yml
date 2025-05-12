@@ -9,7 +9,7 @@ on:
         options:
           - dev
           - prod
-      force-deploy:
+      force_deploy:
         description: "Clear?"
         required: true
         options:
@@ -23,7 +23,7 @@ jobs:
     environment: ${{inputs.env}}
     env:
       TARGET: ${{inputs.target}}
-      CLEAR: ${{inpits.force-deploy}}
+      CLEAR: ${{inpits.force_deploy}}
     steps:
       - name: show target
         run: |
