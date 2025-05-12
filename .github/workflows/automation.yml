@@ -29,7 +29,7 @@ jobs:
       - name: show target
         run: |
           echo "We are using target - $TARGET, clear - $CLEAR"
-          printenv || grep __
+          printenv | grep __
           pwd
           ls -alFh
       
