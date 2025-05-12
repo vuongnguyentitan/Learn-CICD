@@ -24,7 +24,7 @@ jobs:
     environment: ${{inputs.env}}
     env:
       TARGET: ${{inputs.target}}
-      CLEAR: ${{inpits.force_deploy}}
+      CLEAR: ${{inputs.force_deploy}}
     steps:
       - name: show target
         run: |
