@@ -12,6 +12,7 @@ on:
       force_deploy:
         description: "Clear?"
         required: true
+        type: choice
         options:
           - yes
           - no
