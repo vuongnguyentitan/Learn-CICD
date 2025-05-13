@@ -27,10 +27,17 @@ jobs:
       CLEAR: ${{inputs.force_deploy}}
       TEST__USERNAME: ${{secrets.TEST__USERNAME}}
       TEST__PASSWORD: ${{vars.TEST__PASSWORD}}
-      ALL_SECRETS: ${{secrets}}
+      ALLMYSECRETS: ${{ toJSON(secrets) }}
+      ALLMYVARS: ${{ toJSON(vars) }}
     steps:
       - name: show target
         run: |
           echo "We are using target - $TARGET, clear - $CLEAR"
-          printenv 
+          printenv
+          echo "=============================="
+          echo "ALLMYSECRETS"
+          echo $ALLMYSECRETS
+          echo "=============================="
+          echo "ALLMYVARS"
+          echo $ALLMYVARS
       
