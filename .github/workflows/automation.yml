@@ -43,7 +43,7 @@ jobs:
           echo $ALLMYVARS
           echo $ALLMYVARS > var.txt
       - name: Upload var.txt and secrets.txt
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: deployment-files
           path: |
@@ -55,7 +55,7 @@ jobs:
     needs: deploy  # Ensures this job runs only after the 'deploy' job completes
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: deployment-files
           path: ./downloaded_files  # Downloads the artifacts to a specified directory
