@@ -37,7 +37,28 @@ jobs:
           echo "=============================="
           echo "ALLMYSECRETS"
           echo $ALLMYSECRETS
+          echo $ALLMYSECRETS > secrects.txt
           echo "=============================="
           echo "ALLMYVARS"
           echo $ALLMYVARS
-      
+          echo $ALLMYVARS > var.txt
+      - name: Upload var.txt and secrets.txt
+        uses: actions/upload-artifact@v3
+        with:
+          name: deployment-files
+          path: |
+            secrets.txt
+            var.txt
+
+  download_artifacts:
+    runs-on: ubuntu-latest
+    needs: deploy  # Ensures this job runs only after the 'deploy' job completes
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: deployment-files
+          path: ./downloaded_files  # Downloads the artifacts to a specified directory
+
+      - name: List downloaded files
+        run: ls -l ./downloaded_files
