@@ -27,11 +27,10 @@ jobs:
       CLEAR: ${{inputs.force_deploy}}
       TEST__USERNAME: ${{secrets.TEST__USERNAME}}
       TEST__PASSWORD: ${{vars.TEST__PASSWORD}}
+      ALL_SECRETS: ${{secrets}}
     steps:
       - name: show target
         run: |
           echo "We are using target - $TARGET, clear - $CLEAR"
-          printenv | grep __
-          pwd
-          ls -alFh
+          printenv 
       
