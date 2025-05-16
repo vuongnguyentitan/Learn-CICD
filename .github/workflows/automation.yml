@@ -17,48 +17,21 @@ on:
           - yes
           - no
         default: yes
-
+env:
+  TARGET: ${{inputs.target}}
+  CLEAR: ${{inputs.force_deploy}}
+  TEST__USERNAME: ${{secrets.TEST__USERNAME}}
+  TEST__PASSWORD: ${{vars.TEST__PASSWORD}}
+  ALLMYSECRETS: ${{ toJSON(secrets) }}
+  ALLMYVARS: ${{ toJSON(vars) }}
+  
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: ${{inputs.target}}
-    env:
-      TARGET: ${{inputs.target}}
-      CLEAR: ${{inputs.force_deploy}}
-      TEST__USERNAME: ${{secrets.TEST__USERNAME}}
-      TEST__PASSWORD: ${{vars.TEST__PASSWORD}}
-      ALLMYSECRETS: ${{ toJSON(secrets) }}
-      ALLMYVARS: ${{ toJSON(vars) }}
     steps:
       - name: show target
         run: |
           echo "We are using target - $TARGET, clear - $CLEAR"
-          printenv
-          echo "=============================="
-          echo "ALLMYSECRETS"
-          echo $ALLMYSECRETS
-          echo $ALLMYSECRETS > secrects.txt
-          echo "=============================="
-          echo "ALLMYVARS"
-          echo $ALLMYVARS
-          echo $ALLMYVARS > var.txt
-      - name: Upload var.txt and secrets.txt
-        uses: actions/upload-artifact@v4
-        with:
-          name: deployment-files
-          path: |
-            secrets.txt
-            var.txt
-
-  download_artifacts:
-    runs-on: ubuntu-latest
-    needs: deploy  # Ensures this job runs only after the 'deploy' job completes
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: deployment-files
-          path: ./downloaded_files  # Downloads the artifacts to a specified directory
-
-      - name: List downloaded files
-        run: ls -l ./downloaded_files
+          echo "TEST__USERNAME: $TEST__USERNAME"
+          echo "TEST__PASSWORD: $TEST__PASSWORD"
