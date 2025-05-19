@@ -33,8 +33,10 @@ jobs:
           # Save ALLMYSECRETS and ALLMYVARS to files
           echo $ALLMYSECRETS > secrets.json
           echo $ALLMYVARS > var.json
-          jq -r 'to_entries map("\(.key)=\(.value|tostring|@sh)") .[]' secrets.json > ./saver/.env.secrets
-          jq -r 'to_entries map("\(.key)=\(.value|tostring|@sh)") .[]' var.json > ./saver/.env.vars
+
+          jq -r 'to_entries | map("\(.key)=\(.value|tostring|@sh)") | .[]' secrets.json  > ./saver/.env.secrets
+          jq -r 'to_entries | map("\(.key)=\(.value|tostring|@sh)") | .[]' var.json      > ./saver/.env.vars
+
           ls -l ./saver
       - name: Zip both files
         run: |
