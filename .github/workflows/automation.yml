@@ -23,10 +23,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{inputs.target}}
     env:
-      TARGET: ${{inputs.target}}
-      CLEAR: ${{inputs.force_deploy}}
-      TEST__USERNAME: ${{secrets.TEST__USERNAME}}
-      TEST__PASSWORD: ${{vars.TEST__PASSWORD}}
       ALLMYSECRETS: ${{ toJSON(secrets) }}
       ALLMYVARS: ${{ toJSON(vars) }}
     steps:
@@ -34,16 +30,11 @@ jobs:
         run: |
           mkdir saver
           chmod 777 saver
-          echo "We are using target - $TARGET, clear - $CLEAR"
-          printenv
-          echo "=============================="
-          echo "ALLMYSECRETS"
-          echo $ALLMYSECRETS
-          echo $ALLMYSECRETS > ./saver/secrects.txt
-          echo "=============================="
-          echo "ALLMYVARS"
-          echo $ALLMYVARS
-          echo $ALLMYVARS > ./saver/var.txt
+          # Save ALLMYSECRETS and ALLMYVARS to files
+          echo $ALLMYSECRETS > secrets.json
+          echo $ALLMYVARS > var.json
+          jq -r 'to_entries map("\(.key)=\(.value|tostring|@sh)") .[]' secrets.json > ./saver/.env.secrets
+          jq -r 'to_entries map("\(.key)=\(.value|tostring|@sh)") .[]' var.json > ./saver/.env.vars
           ls -l ./saver
       - name: Zip both files
         run: |
