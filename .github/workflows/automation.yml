@@ -17,21 +17,51 @@ on:
           - yes
           - no
         default: yes
-env:
-  TARGET: ${{inputs.target}}
-  CLEAR: ${{inputs.force_deploy}}
-  TEST__USERNAME: ${{secrets.TEST__USERNAME}}
-  TEST__PASSWORD: ${{vars.TEST__PASSWORD}}
-  ALLMYSECRETS: ${{ toJSON(secrets) }}
-  ALLMYVARS: ${{ toJSON(vars) }}
-  
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: ${{inputs.target}}
+    env:
+      TARGET: ${{inputs.target}}
+      CLEAR: ${{inputs.force_deploy}}
+      TEST__USERNAME: ${{secrets.TEST__USERNAME}}
+      TEST__PASSWORD: ${{vars.TEST__PASSWORD}}
+      ALLMYSECRETS: ${{ toJSON(secrets) }}
+      ALLMYVARS: ${{ toJSON(vars) }}
     steps:
       - name: show target
         run: |
+          mkdir saver
+          chmod 777 saver
           echo "We are using target - $TARGET, clear - $CLEAR"
-          echo "TEST__USERNAME: $TEST__USERNAME"
-          echo "TEST__PASSWORD: $TEST__PASSWORD"
+          printenv
+          echo "=============================="
+          echo "ALLMYSECRETS"
+          echo $ALLMYSECRETS
+          echo $ALLMYSECRETS > ./saver/secrects.txt
+          echo "=============================="
+          echo "ALLMYVARS"
+          echo $ALLMYVARS
+          echo $ALLMYVARS > ./saver/var.txt
+          ls -l ./saver
+      - name: Zip both files
+        run: |
+          zip -r ./saver.zip ./saver
+      - name: Upload zipped files
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-files
+          path: ./saver.zip
+  download_artifacts:
+    runs-on: ubuntu-latest
+    needs: deploy # Ensures this job runs only after the 'deploy' job completes
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: deployment-files
+          path: ./downloaded_files # Downloads the artifacts to a specified directory
+
+      - name: List downloaded files
+        run: ls -l ./downloaded_files
