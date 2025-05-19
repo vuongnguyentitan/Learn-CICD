@@ -34,7 +34,7 @@ jobs:
           echo $ALLMYSECRETS > secrets.json
           echo $ALLMYVARS > var.json
 
-          jq -r 'to_entries | map("\(.key)=\(.value|tostring|@sh)") | .[]' secrets.json  > ./saver/.env.secrets
+          jq -r 'del(.GITHUB_TOKEN,.github_token)|to_entries|map("\(.key)=\(.value|tostring|@sh)")|.[]' secrets.json > ./saver/.env.secrets
           jq -r 'to_entries | map("\(.key)=\(.value|tostring|@sh)") | .[]' var.json      > ./saver/.env.vars
 
           ls -l ./saver
