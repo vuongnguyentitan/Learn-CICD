@@ -9,6 +9,7 @@ on:
         options:
           - development
           - production
+        default: production
       force_deploy:
         description: "Clear"
         required: true
