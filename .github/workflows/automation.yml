@@ -2,10 +2,6 @@ name: Deploy code
 on:
   workflow_dispatch:
     inputs:
-      target:
-        description: "Deployment target"
-        required: true
-        default: production
       migrate:
         description: "Run migration"
         required: true
