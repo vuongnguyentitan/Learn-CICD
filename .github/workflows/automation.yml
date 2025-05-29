@@ -26,7 +26,7 @@ jobs:
     needs: [ migration ]
     environment: ${{ github.event.inputs.target }}
     # if: ${{ always() }}
-    if: ${{ always() && jobs.migration.conclusion == 'failure'  }}
+    if: ${{ always() && needs.migration.result != 'failure'  }}
     steps:
       - name: Deploy
         run: echo "ABCD - ${{ needs.migration.result }}…"
