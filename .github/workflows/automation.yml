@@ -28,4 +28,4 @@ jobs:
     if: ${{ steps.migration.conclusion == 'success' || steps.migration.conclusion != 'skipped'  }}
     steps:
       - name: Deploy
-        run: echo "ABCD:  ${{ steps.migration.conclusion }}…"
+        run: echo "ABCD - ${{ steps.migration.conclusion }}…"
