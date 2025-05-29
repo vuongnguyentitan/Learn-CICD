@@ -35,7 +35,7 @@ jobs:
       - lint
       - migration
     environment: ${{ github.event.inputs.target }}
-    if: ${{ needs.migration.result != 'failure' }}
+    if: ${{ !failure() }}
     steps:
       - name: Deploy
         run: echo "Deploying to ${{ needs.migration.result }}…"
