@@ -26,7 +26,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Migrate
-        run: echo "Running migrations…"
+        run: echo "Running migrations…" && sleep 30
 
   deploy:
     name: Deploy ${{ github.event.inputs.target }}
