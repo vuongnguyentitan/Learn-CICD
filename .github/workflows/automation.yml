@@ -25,6 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ migration ]
     environment: ${{ github.event.inputs.target }}
+    if: ${{ always() }}
     # if: ${{ needs.migration.result == 'success' || needs.migration.result != 'skipped'  }}
     steps:
       - name: Deploy
