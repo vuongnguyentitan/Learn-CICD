@@ -18,7 +18,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Migrate
-        run: echo "Running migrations…" && sleep 30 && exit 1
+        run: echo "Running migrations…" && sleep 60 && exit 1
 
   deploy:
     name: Deploy ${{ github.event.inputs.target }}
@@ -26,7 +26,7 @@ jobs:
     needs: [ migration ]
     environment: ${{ github.event.inputs.target }}
     # if: ${{ always() }}
-    if: ${{ always() && ( needs.migration.result == 'success' ||  needs.migration.result == 'skipped' ) }}
+    if: ${{ !cancelled() && ( needs.migration.result == 'success' ||  needs.migration.result == 'skipped' ) }}
     steps:
       - name: Deploy
         run: echo "ABCD - ${{ needs.migration.result }}…"
